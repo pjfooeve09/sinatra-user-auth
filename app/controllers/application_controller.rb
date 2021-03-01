@@ -16,11 +16,11 @@ class ApplicationController < Sinatra::Base
     erb :'/registrations/signup'
   end
 
-  post '/registrations' do
+  post '/registrations' do #this is for the user to sign up
     @user = User.new(name: params["name"], email: params["email"], password: params["password"])
     @user.save
     session[:user_id] = @user.id
-
+    puts params
     redirect '/users/home'
   end
 
@@ -30,7 +30,7 @@ class ApplicationController < Sinatra::Base
     erb :'sessions/login'
   end
 
-  post '/sessions' do
+  post '/sessions' do #this is to match what the user entered in username and password, and if it matches, it will log in the user and redirect to anoter page
     @user = User.find_by(email: params[:email], password: params[:password])
     if @user
       session[:user_id] = @user.id
@@ -39,7 +39,7 @@ class ApplicationController < Sinatra::Base
     redirect '/sessions/login'
   end
 
-  get '/sessions/logout' do
+  get '/sessions/logout' do #this logs out the user
     session.clear
     redirect '/'
   end
